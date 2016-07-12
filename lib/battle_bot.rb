@@ -60,7 +60,7 @@ class BattleBot
 
   def attack(target)
     raise ArgumentError unless target.class == BattleBot
-    raise ArgumentError if target == self
+    raise ArgumentError if target.object_id == self.object_id
     raise ArgumentError unless @weapon
     target.receive_attack_from(self)
   end
@@ -75,8 +75,15 @@ class BattleBot
   end
 
   def defend_against(enemy)
-    raise ArgumentError unless attacker.class == BattleBot
-
+    raise ArgumentError unless enemy.class == BattleBot
+    unless dead?
+      attack(enemy) if has_weapon?
+    end
   end
+
+  def self.count
+    @@count
+  end
+
 
 end
